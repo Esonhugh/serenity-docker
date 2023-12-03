@@ -5,13 +5,11 @@ WORKDIR /go/src/github.com/sagernet/serenity
 ARG GOPROXY=""
 ENV GOPROXY ${GOPROXY}
 ENV CGO_ENABLED=0
+RUN go mod tidy
 RUN set -ex \
     && apk add git build-base \
-    && export COMMIT=$(git rev-parse --short HEAD) \
-    && export VERSION=$(go run ./cmd/internal/read_tag) \
-    && go build -v -trimpath -tags with_acme \
+    && go build \
         -o /go/bin/serenity \
-        -ldflags "-s -w -buildid=" \
         ./cmd/serenity
 FROM alpine AS dist
 LABEL maintainer="nekohasekai <contact-git@sekai.icu>"
