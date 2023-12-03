@@ -4,9 +4,13 @@ on:
     inputs:
       tag:
         description: "The tag version you want to build"
+
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -24,15 +28,16 @@ jobs:
         id: metadata
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/sagernet/serenity
+          images: ghcr.io/esonhugh/serenity-docker
+      # Ok, I need docker image
       - name: Get tag to build
         id: tag
         run: |
-          echo "latest=ghcr.io/sagernet/serenity:latest" >> $GITHUB_OUTPUT
+          echo "latest=ghcr.io/esonhugh/serenity-docker:latest" >> $GITHUB_OUTPUT
           if [[ -z "${{ github.event.inputs.tag }}" ]]; then
-            echo "versioned=ghcr.io/sagernet/serenity:${{ github.ref_name }}" >> $GITHUB_OUTPUT
+            echo "versioned=ghcr.io/esonhugh/serenity-docker:${{ github.ref_name }}" >> $GITHUB_OUTPUT
           else
-            echo "versioned=ghcr.io/sagernet/serenity:${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
+            echo "versioned=ghcr.io/esonhugh/serenity-docker:${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
           fi
       - name: Build and release Docker images
         uses: docker/build-push-action@v4

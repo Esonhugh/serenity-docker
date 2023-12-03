@@ -15,9 +15,13 @@ RUN set -ex \
         ./cmd/serenity
 FROM alpine AS dist
 LABEL maintainer="nekohasekai <contact-git@sekai.icu>"
+LABEL image_distrbutor="esonhugh <serenity-docker@eson.ninja>"
+LABEL image_maintainer="esonhugh <serenity-docker@eson.ninja>"
 RUN set -ex \
     && apk upgrade \
     && apk add bash tzdata ca-certificates \
     && rm -rf /var/cache/apk/*
 COPY --from=builder /go/bin/serenity /usr/local/bin/serenity
-ENTRYPOINT ["serenity"]
+# ENTRYPOINT ["serenity"]
+# use CMD by default
+CMD ["/usr/local/bin/serenity", "run", "-c", "/etc/serenity/serenity.json"]
