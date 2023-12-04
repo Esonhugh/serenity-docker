@@ -10,7 +10,9 @@ import (
 )
 
 func DefaultTemplate(profileName string, platform string, version *Version, debug bool) *Profile {
-	if version == nil || version.EqualAfter(ParseVersion("1.8.0-alpha.1")) {
+	if version != nil && version.EqualAfter(ParseVersion("1.8.0-alpha.6")) {
+		return defaultTemplate18a6(profileName, platform, version, debug)
+	} else if version == nil || version.EqualAfter(ParseVersion("1.8.0-alpha.1")) {
 		return defaultTemplate18(profileName, platform, version, debug)
 	} else {
 		return defaultTemplate17(profileName, platform, version, debug)
@@ -177,8 +179,8 @@ func defaultTemplate18a6(profileName string, platform string, version *Version, 
 			{
 				Type: C.RuleTypeDefault,
 				DefaultOptions: option.DefaultRule{
-					GeoIP:    []string{"private"},
-					Outbound: "direct",
+					IPIsPrivate: true,
+					Outbound:    "direct",
 				},
 			},
 			{
@@ -710,8 +712,8 @@ func defaultTemplate17(profileName string, platform string, version *Version, de
 			{
 				Type: C.RuleTypeDefault,
 				DefaultOptions: option.DefaultRule{
-					IPIsPrivate: true,
-					Outbound:    "direct",
+					GeoIP:    []string{"private"},
+					Outbound: "direct",
 				},
 			},
 			{
