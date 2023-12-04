@@ -7,6 +7,7 @@ RUN go mod tidy
 RUN set -ex \
     && apk add git build-base \
     && go build \
+         -v -trimpath -ldflags "-s -w -buildid=" -tags "with_acme"  \
         -o /go/bin/serenity \
         ./cmd/serenity
 FROM alpine AS dist
