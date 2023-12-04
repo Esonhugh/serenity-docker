@@ -10,9 +10,7 @@ import (
 )
 
 func DefaultTemplate(profileName string, platform string, version *Version, debug bool) *Profile {
-	if version != nil && version.EqualAfter(ParseVersion("1.4.0-alpha.6")) {
-		return defaultTemplate18a6(profileName, platform, version, debug)
-	} else if version == nil || version.EqualAfter(ParseVersion("1.8.0-alpha.1")) {
+	if version == nil || version.EqualAfter(ParseVersion("1.8.0-alpha.1")) {
 		return defaultTemplate18(profileName, platform, version, debug)
 	} else {
 		return defaultTemplate17(profileName, platform, version, debug)
@@ -573,6 +571,8 @@ func defaultTemplate18(profileName string, platform string, version *Version, de
 	}
 }
 
+//goland:noinspection GoDeprecation
+//nolint:staticcheck
 func defaultTemplate17(profileName string, platform string, version *Version, debug bool) *Profile {
 	var options option.Options
 	options.Log = &option.LogOptions{

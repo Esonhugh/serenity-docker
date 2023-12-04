@@ -34,15 +34,11 @@ jobs:
         id: tag
         run: |
           echo "latest=ghcr.io/esonhugh/serenity-docker:latest" >> $GITHUB_OUTPUT
-          if [[ -z "${{ github.event.inputs.tag }}" ]]; then
-            echo "versioned=ghcr.io/esonhugh/serenity-docker:${{ github.ref_name }}" >> $GITHUB_OUTPUT
-          else
-            echo "versioned=ghcr.io/esonhugh/serenity-docker:${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
-          fi
+          echo "versioned=ghcr.io/esonhugh/serenity-docker:${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
       - name: Build and release Docker images
         uses: docker/build-push-action@v4
         with:
-          platforms: linux/386,linux/amd64,linux/arm64,linux/s390x
+          platforms: linux/amd64 # only you~
           target: dist
           tags: |
             ${{ steps.tag.outputs.latest }}
